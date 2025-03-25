@@ -1,0 +1,15 @@
+node_modules/
+.env
+logs/
+coverage/
+.DS_Store
+.vscode/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+.idea/
+*.log
+tmp/
+temp/
+uploads/*
+!uploads/.gitkeep
