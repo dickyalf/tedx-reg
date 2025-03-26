@@ -1,35 +1,43 @@
 {
   "name": "tedx-reg",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Sistem registrasi TEDxUC dengan Express.js dan MongoDB",
+  "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "express",
+    "mongodb",
+    "event",
+    "registration",
+    "midtrans"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
   "dependencies": {
-    "bcryptjs": "^3.0.2",
-    "compression": "^1.8.0",
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "express-rate-limit": "^7.5.0",
-    "express-validator": "^7.2.1",
-    "helmet": "^8.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "midtrans-client": "^1.4.2",
-    "moment": "^2.30.1",
-    "mongoose": "^8.13.0",
-    "multer": "^1.4.5-lts.2",
-    "nodemailer": "^6.10.0",
-    "qrcode": "^1.5.4",
-    "uuid": "^11.1.0",
-    "winston": "^3.17.0"
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.7.0",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "midtrans-client": "^1.3.1",
+    "moment": "^2.29.4",
+    "mongoose": "^7.2.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.2",
+    "qrcode": "^1.5.3",
+    "uuid": "^9.0.0",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "morgan": "^1.10.0",
-    "nodemon": "^3.1.9"
+    "nodemon": "^2.0.22"
   }
 }
