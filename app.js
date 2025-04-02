@@ -17,6 +17,7 @@ const { apiLimiter } = require('./middleware/rateLimiter');
 const eventRoutes = require('./routes/eventRoutes');
 const registrationRoutes = require('./routes/registrationRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const logger = require('./utils/logger');
 
@@ -58,6 +59,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/events', eventRoutes);
 app.use('/api/registrations', registrationRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/auth', authRoutes);
+
 
 app.get('/', (req, res) => {
   res.json({

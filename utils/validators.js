@@ -80,8 +80,51 @@ const paymentValidators = [
     .isIn(['bca_va', 'qris']).withMessage('Metode pembayaran tidak valid')
 ];
 
+const authValidators = {
+  register: [
+    check('name')
+      .trim()
+      .notEmpty().withMessage('Nama harus diisi')
+      .isLength({ min: 2, max: 50 }).withMessage('Nama harus antara 2 dan 50 karakter'),
+    
+    check('email')
+      .trim()
+      .notEmpty().withMessage('Email harus diisi')
+      .isEmail().withMessage('Format email tidak valid')
+      .normalizeEmail(),
+    
+    check('password')
+      .notEmpty().withMessage('Password harus diisi')
+      .isLength({ min: 6 }).withMessage('Password minimal 6 karakter'),
+    
+    check('role')
+      .optional()
+      .isIn(['user', 'admin']).withMessage('Role tidak valid')
+  ],
+  
+  login: [
+    check('email')
+      .trim()
+      .notEmpty().withMessage('Email harus diisi')
+      .isEmail().withMessage('Format email tidak valid'),
+    
+    check('password')
+      .notEmpty().withMessage('Password harus diisi')
+  ],
+  
+  changePassword: [
+    check('currentPassword')
+      .notEmpty().withMessage('Password lama harus diisi'),
+    
+    check('newPassword')
+      .notEmpty().withMessage('Password baru harus diisi')
+      .isLength({ min: 6 }).withMessage('Password baru minimal 6 karakter')
+  ]
+};
+
 module.exports = {
   registrationValidators,
   eventValidators,
-  paymentValidators
+  paymentValidators,
+  authValidators
 };

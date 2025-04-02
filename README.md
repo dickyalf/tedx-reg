@@ -105,3 +105,111 @@ npm start
 - Batasi akses API dengan CORS yang sesuai
 - Rate limiting sudah terpasang di semua endpoint API
 
+# Panduan Autentikasi Admin
+
+## Membuat Admin Pertama
+
+Setelah menginstal dan mengkonfigurasi aplikasi, Anda perlu membuat user admin pertama dengan menjalankan script:
+
+```bash
+node scripts/createAdminUser.js
+```
+
+Script ini akan membuat akun admin dengan kredensial berikut:
+- Email: admin@example.com
+- Password: adminpassword123
+
+**PENTING**: Segera ubah password default setelah login pertama kali!
+
+## API Endpoints Autentikasi
+
+### Registrasi User
+```
+POST /api/auth/register
+```
+Body:
+```json
+{
+  "name": "User Name",
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+
+### Login
+```
+POST /api/auth/login
+```
+Body:
+```json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+Response akan menyertakan token JWT yang harus disertakan dalam header Authorization untuk akses ke endpoint yang dilindungi.
+
+### Mendapatkan Profil User
+```
+GET /api/auth/me
+```
+Header:
+```
+Authorization: Bearer YOUR_JWT_TOKEN
+```
+
+### Mengubah Password
+```
+PUT /api/auth/changepassword
+```
+Header:
+```
+Authorization: Bearer YOUR_JWT_TOKEN
+```
+Body:
+```json
+{
+  "currentPassword": "password123",
+  "newPassword": "newPassword123"
+}
+```
+
+### Registrasi Admin Baru (Admin only)
+```
+POST /api/auth/register-admin
+```
+Header:
+```
+Authorization: Bearer ADMIN_JWT_TOKEN
+```
+Body:
+```json
+{
+  "name": "Admin Name",
+  "email": "admin2@example.com",
+  "password": "adminPassword123",
+  "role": "admin"
+}
+```
+
+## Menggunakan Token JWT
+
+Setelah login, Anda akan menerima token JWT. Gunakan token ini untuk mengakses endpoint yang memerlukan autentikasi dengan menyertakannya di header Authorization:
+
+```
+Authorization: Bearer YOUR_JWT_TOKEN
+```
+
+Token ini harus disertakan untuk semua endpoint admin, seperti:
+- Membuat event baru
+- Mengupdate event
+- Menghapus event
+- Melihat semua registrasi
+- dll.
+
+## Keamanan
+
+- Token JWT akan kedaluwarsa setelah periode waktu tertentu (dikonfigurasi di JWT_EXPIRE pada file .env)
+- Password disimpan dalam bentuk hash menggunakan bcrypt
+- Validasi input diterapkan untuk mencegah injeksi dan data tidak valid
+- Rate limiting diterapkan untuk mencegah brute force
