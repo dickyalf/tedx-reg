@@ -1,6 +1,6 @@
-# Event Registration System
+# TEDxUC Registration System
 
-Sistem Registrasi Event dengan Express.js dan MongoDB yang dilengkapi dengan fitur manajemen lengkap.
+Sistem Registrasi TEDxUC dengan Express.js dan MongoDB yang dilengkapi dengan fitur manajemen lengkap.
 
 ## Fitur Utama
 
