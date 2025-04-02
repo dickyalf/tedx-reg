@@ -95,11 +95,7 @@ const authValidators = {
     
     check('password')
       .notEmpty().withMessage('Password harus diisi')
-      .isLength({ min: 6 }).withMessage('Password minimal 6 karakter'),
-    
-    check('role')
-      .optional()
-      .isIn(['user', 'admin']).withMessage('Role tidak valid')
+      .isLength({ min: 6 }).withMessage('Password minimal 6 karakter')
   ],
   
   login: [

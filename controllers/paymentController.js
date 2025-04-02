@@ -48,6 +48,47 @@ const createPayment = async (req, res) => {
       );
     }
 
+    if (event.price === 0) {
+      registration.status = 'paid';
+      
+      try {
+        const qrPath = await qrService.generateQR(registration._id, registration.registrationNumber);
+        registration.qrCode = qrPath;
+      } catch (qrError) {
+        logger.error(`Error generating QR: ${qrError.message}`);
+      }
+      
+      await registration.save({ session });
+      
+      const payment = new Payment({
+        registrationId,
+        amount: 0,
+        paymentMethod: 'free',
+        status: 'success',
+        transactionId: `FREE-${Date.now()}`,
+        paymentDate: new Date()
+      });
+      
+      await payment.save({ session });
+      
+      try {
+        await emailService.sendRegistrationEmail(registration, event, payment);
+        logger.info(`Registration confirmation email sent to ${registration.email}`);
+      } catch (emailError) {
+        logger.error(`Error sending confirmation email: ${emailError.message}`);
+      }
+      
+      await session.commitTransaction();
+      session.endSession();
+      
+      return res.status(200).json(
+        successResponse('Registrasi gratis berhasil', {
+          registration,
+          payment
+        })
+      );
+    }
+    
     const pendingPayment = await Payment.findOne({
       registrationId,
       status: 'pending'

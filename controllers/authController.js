@@ -3,13 +3,13 @@ const { successResponse, errorResponse } = require('../utils/responseFormatter')
 const logger = require('../utils/logger');
 
 /**
- * @desc    Register user
- * @route   POST /api/auth/register
- * @access  Public
+ * @desc    Register admin (hanya admin yang bisa membuat admin baru)
+ * @route   POST /api/auth/register-admin
+ * @access  Private/Admin
  */
-const register = async (req, res) => {
+const registerAdmin = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password } = req.body;
 
     const userExists = await User.findOne({ email });
 
@@ -19,34 +19,23 @@ const register = async (req, res) => {
       );
     }
 
-    if (role === 'admin' && (!req.user || req.user.role !== 'admin')) {
-      return res.status(403).json(
-        errorResponse('Unauthorized to create admin account')
-      );
-    }
-
     const user = await User.create({
       name,
       email,
       password,
-      role: role || 'user' 
+      role: 'admin'
     });
 
-    const token = user.getSignedJwtToken();
-
     return res.status(201).json(
-      successResponse('User berhasil didaftarkan', {
-        user: {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role
-        },
-        token
+      successResponse('Admin berhasil didaftarkan', {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
       })
     );
   } catch (error) {
-    logger.error(`Error in register: ${error.message}`);
+    logger.error(`Error in registerAdmin: ${error.message}`);
     return res.status(500).json(
       errorResponse('Server error')
     );
@@ -54,7 +43,7 @@ const register = async (req, res) => {
 };
 
 /**
- * @desc    Login user
+ * @desc    Login admin
  * @route   POST /api/auth/login
  * @access  Public
  */
@@ -73,6 +62,12 @@ const login = async (req, res) => {
     if (!user) {
       return res.status(401).json(
         errorResponse('Email atau password salah')
+      );
+    }
+
+    if (user.role !== 'admin') {
+      return res.status(403).json(
+        errorResponse('Akses tidak diizinkan')
       );
     }
 
@@ -109,16 +104,16 @@ const login = async (req, res) => {
 };
 
 /**
- * @desc    Get current logged in user
+ * @desc    Get current logged in admin
  * @route   GET /api/auth/me
- * @access  Private
+ * @access  Private/Admin
  */
 const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
 
     return res.status(200).json(
-      successResponse('Data user berhasil diambil', {
+      successResponse('Data admin berhasil diambil', {
         id: user._id,
         name: user.name,
         email: user.email,
@@ -136,13 +131,12 @@ const getMe = async (req, res) => {
 /**
  * @desc    Change password
  * @route   PUT /api/auth/changepassword
- * @access  Private
+ * @access  Private/Admin
  */
 const changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
 
-    // Validate
     if (!currentPassword || !newPassword) {
       return res.status(400).json(
         errorResponse('Mohon masukkan password lama dan baru')
@@ -186,7 +180,7 @@ const changePassword = async (req, res) => {
 };
 
 module.exports = {
-  register,
+  registerAdmin,
   login,
   getMe,
   changePassword

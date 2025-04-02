@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { 
-  register, 
+  registerAdmin, 
   login, 
   getMe,
   changePassword
@@ -11,12 +11,11 @@ const { validate } = require('../middleware/validator');
 const { authValidators } = require('../utils/validators');
 const { apiLimiter } = require('../middleware/rateLimiter');
 
-router.post('/register', authValidators.register, validate, register);
 router.post('/login', authValidators.login, validate, login);
 
-router.get('/me', protect, getMe);
-router.put('/changepassword', protect, authValidators.changePassword, validate, changePassword);
+router.get('/me', [protect, adminOnly], getMe);
+router.put('/changepassword', [protect, adminOnly, authValidators.changePassword, validate], changePassword);
 
-router.post('/register-admin', [protect, adminOnly, authValidators.register, validate], register);
+router.post('/register-admin', [protect, adminOnly, authValidators.register, validate], registerAdmin);
 
 module.exports = router;

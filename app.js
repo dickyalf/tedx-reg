@@ -18,6 +18,9 @@ const eventRoutes = require('./routes/eventRoutes');
 const registrationRoutes = require('./routes/registrationRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const authRoutes = require('./routes/authRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const exportRoutes = require('./routes/exportRoutes');
+const emailRoutes = require('./routes/emailRoutes');
 
 const logger = require('./utils/logger');
 
@@ -60,6 +63,9 @@ app.use('/api/events', eventRoutes);
 app.use('/api/registrations', registrationRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/admin/export', exportRoutes);
+app.use('/api/admin/email', emailRoutes);
 
 
 app.get('/', (req, res) => {
