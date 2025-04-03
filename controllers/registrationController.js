@@ -4,6 +4,8 @@ const Payment = require('../models/Payment');
 const { successResponse, errorResponse } = require('../utils/responseFormatter');
 const logger = require('../utils/logger');
 const qrService = require('../services/qrService');
+const mongoose = require('mongoose');
+
 
 /**
  * @desc    Register user to event
