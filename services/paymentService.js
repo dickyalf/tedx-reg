@@ -25,30 +25,30 @@ const snap = new midtransClient.Snap({
 const createBcaVaTransaction = async (payment, registration, event) => {
   try {
     const orderId = `ORDER-${uuidv4()}`;
-    
+
     const transactionDetails = {
       order_id: orderId,
       gross_amount: payment.amount
     };
-    
+
     const customerDetails = {
       first_name: registration.fullName.split(' ')[0],
       last_name: registration.fullName.split(' ').slice(1).join(' ') || '',
       email: registration.email,
       phone: registration.phoneNumber
     };
-    
+
     const itemDetails = [{
       id: event._id,
       price: payment.amount,
       quantity: 1,
       name: `${event.name} (${event.type})`
     }];
-    
+
     const currentDate = new Date();
     currentDate.setHours(currentDate.getHours() + 24);
     const expiryTime = currentDate.toISOString();
-    
+
     const bcaParameter = {
       payment_type: 'bank_transfer',
       transaction_details: transactionDetails,
@@ -63,10 +63,10 @@ const createBcaVaTransaction = async (payment, registration, event) => {
         unit: 'hour'
       }
     };
-    
+
     // Membuat transaksi
     const response = await core.charge(bcaParameter);
-    
+
     return {
       ...response,
       expiryTime
@@ -87,26 +87,26 @@ const createBcaVaTransaction = async (payment, registration, event) => {
 const createQrisTransaction = async (payment, registration, event) => {
   try {
     const orderId = `ORDER-${uuidv4()}`;
-    
+
     const transactionDetails = {
       order_id: orderId,
       gross_amount: payment.amount
     };
-    
+
     const customerDetails = {
       first_name: registration.fullName.split(' ')[0],
       last_name: registration.fullName.split(' ').slice(1).join(' ') || '',
       email: registration.email,
       phone: registration.phoneNumber
     };
-    
+
     const itemDetails = [{
       id: event._id,
       price: payment.amount,
       quantity: 1,
       name: `${event.name} (${event.type})`
     }];
-    
+
     const qrisParameter = {
       payment_type: 'gopay',
       transaction_details: transactionDetails,
@@ -115,15 +115,15 @@ const createQrisTransaction = async (payment, registration, event) => {
       custom_expiry: {
         expiry_duration: 24,
         unit: 'hour'
-      }
+      },
     };
-    
+
     const response = await core.charge(qrisParameter);
-    
+
     const currentDate = new Date();
     currentDate.setHours(currentDate.getHours() + 24);
     const expiryTime = currentDate.toISOString();
-    
+
     return {
       ...response,
       expiryTime
