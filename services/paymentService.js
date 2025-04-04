@@ -108,13 +108,10 @@ const createQrisTransaction = async (payment, registration, event) => {
     }];
     
     const qrisParameter = {
-      payment_type: 'qris',
+      payment_type: 'gopay',
       transaction_details: transactionDetails,
       customer_details: customerDetails,
       item_details: itemDetails,
-      qris: {
-        acquirer: 'gopay'
-      },
       custom_expiry: {
         expiry_duration: 24,
         unit: 'hour'
