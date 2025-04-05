@@ -66,6 +66,14 @@ app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin/export', exportRoutes);
 app.use('/api/admin/email', emailRoutes);
+const testRoutes = require('./routes/testRoutes');
+if (process.env.NODE_ENV === 'development') {
+  app.use('/api/test', testRoutes);
+  logger.info('Test routes enabled in development mode');
+} else {
+  app.use('/api/test', [protect, adminOnly], testRoutes);
+  logger.info('Test routes enabled in production mode (admin only)');
+}
 
 
 app.get('/', (req, res) => {

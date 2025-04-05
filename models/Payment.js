@@ -14,7 +14,7 @@ const PaymentSchema = new mongoose.Schema({
     paymentMethod: {
         type: String,
         required: [true, 'Metode pembayaran harus diisi'],
-        enum: ['bca_va', 'qris']
+        enum: ['bca_va', 'qris' , 'free']
     },
     status: {
         type: String,

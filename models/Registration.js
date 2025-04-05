@@ -56,6 +56,9 @@ const RegistrationSchema = new mongoose.Schema({
     qrCode: {
         type: String
     },
+    pdfTicket: {
+        type: String
+    },
     attendanceStatus: {
         type: String,
         enum: ['not_attended', 'attended'],
