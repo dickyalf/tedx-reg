@@ -1,5 +1,8 @@
 node_modules/
 .env
+logo/
+pdfs/
+qrcodes/
 logs/
 coverage/
 .DS_Store
